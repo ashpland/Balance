@@ -8,3 +8,4 @@
 - [ ] Custom UITableViewCell with nicer layout
 - [ ] Visualization of data points
 	- [ ] Include ^ in notifications, quick action menu, and today widgets
+- [ ] Group by Day [Sort table view by date](https://stackoverflow.com/questions/11102174/core-data-sort-tableview-by-formatted-date")

@@ -10,6 +10,7 @@
 #import "NotificationManager.h"
 
 @interface MasterViewController ()
+//- (IBAction)checkQueue:(UIBarButtonItem *)sender;
 
 @end
 
@@ -132,7 +133,13 @@
             break;
     }
     
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ - %@", moodLevelString, moodLog.timestamp.description];
+    cell.textLabel.text = moodLevelString;
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+    dateFormatter.timeStyle = NSDateFormatterShortStyle;
+    
+    cell.detailTextLabel.text = [dateFormatter stringFromDate:moodLog.timestamp];
 }
 
 
@@ -228,4 +235,7 @@
 }
  */
 
+- (IBAction)checkQueue:(UIBarButtonItem *)sender {
+    [NotificationManager requestScheduledNotifications];
+}
 @end

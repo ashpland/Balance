@@ -18,6 +18,8 @@
 
 @implementation NotificationManager
 
+# pragma mark - init and setup
+
 + (instancetype)sharedNotificationManager {
     static NotificationManager *theNotificationManager = nil;
     
@@ -33,6 +35,7 @@
     self = [super init];
     if (self) {
         [self setupNotificationCenter];
+        [self startRegularMoodLogRequests];
     }
     return self;
 }
@@ -47,10 +50,42 @@
                           }];
     
     [self setupNotificationResponses];
+}
+
+
+- (void)setupNotificationResponses
+{
     
+    // Create the custom actions for expired timer notifications.
+    UNNotificationAction *highAction = [UNNotificationAction
+                                        actionWithIdentifier:@"HIGH_ACTION"
+                                        title:@"▲ High"
+                                        options:UNNotificationActionOptionNone];
     
+    UNNotificationAction *middleAction = [UNNotificationAction
+                                          actionWithIdentifier:@"MIDDLE_ACTION"
+                                          title:@"● Balanced"
+                                          options:UNNotificationActionOptionNone];
+    
+    UNNotificationAction *lowAction = [UNNotificationAction
+                                       actionWithIdentifier:@"LOW_ACTION"
+                                       title:@"▼ Low"
+                                       options:UNNotificationActionOptionNone];
+    
+    // Create the category with the custom actions.
+    UNNotificationCategory *requestLogCategory = [UNNotificationCategory
+                                                  categoryWithIdentifier:@"REQUEST_LOG"
+                                                  actions:@[highAction, middleAction, lowAction]
+                                                  intentIdentifiers:@[]
+                                                  options:UNNotificationCategoryOptionCustomDismissAction];
+    
+    // Register the notification categories.
+    [self.notificationCenter setNotificationCategories:[NSSet setWithObjects:requestLogCategory,nil]];
     
 }
+
+
+#pragma mark - NotificationCenterDelegate
 
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler
 {
@@ -59,6 +94,8 @@
 
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler
 {
+    NSLog(@"Response Recieved");
+    [self.notificationCenter removeAllPendingNotificationRequests];
     
     if ([response.notification.request.content.categoryIdentifier isEqualToString:@"REQUEST_LOG"]) {
 
@@ -76,45 +113,17 @@
         }
         
     }
+    
+    [self startRegularMoodLogRequests];
 
     completionHandler();
 }
 
-- (void)setupNotificationResponses
-{
-    
-    // Create the custom actions for expired timer notifications.
-    UNNotificationAction *highAction = [UNNotificationAction
-                                        actionWithIdentifier:@"HIGH_ACTION"
-                                        title:@"▲ High"
-                                        options:UNNotificationActionOptionNone];
-    
-    UNNotificationAction *middleAction = [UNNotificationAction
-                                        actionWithIdentifier:@"MIDDLE_ACTION"
-                                        title:@"● Balanced"
-                                        options:UNNotificationActionOptionNone];
-    
-    UNNotificationAction *lowAction = [UNNotificationAction
-                                        actionWithIdentifier:@"LOW_ACTION"
-                                        title:@"▼ Low"
-                                        options:UNNotificationActionOptionNone];
-    
-    // Create the category with the custom actions.
-    UNNotificationCategory *requestLogCategory = [UNNotificationCategory
-                                               categoryWithIdentifier:@"REQUEST_LOG"
-                                               actions:@[highAction, middleAction, lowAction]
-                                               intentIdentifiers:@[]
-                                               options:UNNotificationCategoryOptionCustomDismissAction];
-    
-    // Register the notification categories.
-    [self.notificationCenter setNotificationCategories:[NSSet setWithObjects:requestLogCategory,nil]];
-    
-}
-
+#pragma mark - scheduling notifications
 
 - (void)startRegularMoodLogRequests {
     UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger
-                                                  triggerWithTimeInterval:360
+                                                  triggerWithTimeInterval:3600
                                                   repeats:YES];
     
     [self scheduleMoodLogNotificaiton:@"RepeatingMoodRequest"
@@ -125,7 +134,7 @@
 
 + (void)requestMoodLog {
     UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger
-                                                  triggerWithTimeInterval:0.5
+                                                  triggerWithTimeInterval:5
                                                   repeats:NO];
     
     [[NotificationManager sharedNotificationManager] scheduleMoodLogNotificaiton:@"InstantMoodRequest"
@@ -139,7 +148,6 @@
 {
     UNMutableNotificationContent *content = [UNMutableNotificationContent new];
     content.title = @"How is your mood?";
-//    content.body = @"This is body text";
     content.categoryIdentifier = @"REQUEST_LOG";
     content.sound = [UNNotificationSound defaultSound];
     
@@ -153,8 +161,27 @@
 }
 
 
+#pragma mark - for debugging
+
++(void)requestScheduledNotifications
+{
+    [[NotificationManager sharedNotificationManager] requestScheduledNotifications];
+}
+
+-(void)requestScheduledNotifications
+{
+    [self.notificationCenter getPendingNotificationRequestsWithCompletionHandler:^(NSArray<UNNotificationRequest *> *requests){
+        NSDate *nextTriggerDate = [(UNTimeIntervalNotificationTrigger *)requests[0].trigger nextTriggerDate];
+                
+        NSLog(@"%@", nextTriggerDate);
+        
+    }];
+}
 
 
+
+#pragma mark - adding to model
+// should probably be somewhere else
 
 - (void)createMoodLog:(MoodLevel)moodLevel {
     NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];

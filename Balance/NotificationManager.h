@@ -25,4 +25,6 @@ typedef NS_ENUM(NSUInteger, MoodLevel) {
 
 + (void)requestMoodLog;
 
++ (void)requestScheduledNotifications;
+
 @end
