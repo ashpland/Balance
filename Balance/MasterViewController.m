@@ -19,12 +19,15 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(triggerRequestMoodLog)];
     self.navigationItem.rightBarButtonItem = addButton;
     self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
 }
+
+
 
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -114,7 +117,22 @@
 
 
 - (void)configureCell:(UITableViewCell *)cell withMoodLog:(MoodLog *)moodLog {
-    cell.textLabel.text = moodLog.timestamp.description;
+    NSString *moodLevelString;
+    switch (moodLog.moodLevel) {
+        case 0:
+            moodLevelString = @"Low";
+            break;
+        case 1:
+            moodLevelString = @"Balanced";
+            break;
+        case 2:
+            moodLevelString = @"High";
+            break;
+        default:
+            break;
+    }
+    
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ - %@", moodLevelString, moodLog.timestamp.description];
 }
 
 

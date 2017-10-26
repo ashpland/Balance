@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import "Balance+CoreDataModel.h"
+@import UserNotifications;
 
 @class DetailViewController;
 

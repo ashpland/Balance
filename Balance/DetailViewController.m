@@ -16,7 +16,22 @@
 - (void)configureView {
     // Update the user interface for the detail item.
     if (self.detailItem) {
-        self.detailDescriptionLabel.text = self.detailItem.timestamp.description;
+        NSString *moodLevelString;
+        switch (self.detailItem.moodLevel) {
+            case 0:
+                moodLevelString = @"Low";
+                break;
+            case 1:
+                moodLevelString = @"Balanced";
+                break;
+            case 2:
+                moodLevelString = @"High";
+                break;
+            default:
+                break;
+        }
+        
+        self.detailDescriptionLabel.text = [NSString stringWithFormat:@"%@ - %@", moodLevelString, self.detailItem.timestamp.description];
     }
 }
 
