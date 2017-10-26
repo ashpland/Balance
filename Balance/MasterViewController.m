@@ -120,13 +120,13 @@
     NSString *moodLevelString;
     switch (moodLog.moodLevel) {
         case 0:
-            moodLevelString = @"Low";
+            moodLevelString = @"▼ Low";
             break;
         case 1:
-            moodLevelString = @"Balanced";
+            moodLevelString = @"● Balanced";
             break;
         case 2:
-            moodLevelString = @"High";
+            moodLevelString = @"▲ High";
             break;
         default:
             break;

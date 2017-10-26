@@ -87,17 +87,17 @@
     // Create the custom actions for expired timer notifications.
     UNNotificationAction *highAction = [UNNotificationAction
                                         actionWithIdentifier:@"HIGH_ACTION"
-                                        title:@"High"
+                                        title:@"▲ High"
                                         options:UNNotificationActionOptionNone];
     
     UNNotificationAction *middleAction = [UNNotificationAction
                                         actionWithIdentifier:@"MIDDLE_ACTION"
-                                        title:@"Balanced"
+                                        title:@"● Balanced"
                                         options:UNNotificationActionOptionNone];
     
     UNNotificationAction *lowAction = [UNNotificationAction
                                         actionWithIdentifier:@"LOW_ACTION"
-                                        title:@"Low"
+                                        title:@"▼ Low"
                                         options:UNNotificationActionOptionNone];
     
     // Create the category with the custom actions.
