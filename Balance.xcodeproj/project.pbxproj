@@ -15,6 +15,7 @@
 		49387F401FA1A1BC00A8A8EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49387F3F1FA1A1BC00A8A8EA /* Assets.xcassets */; };
 		49387F431FA1A1BC00A8A8EA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49387F411FA1A1BC00A8A8EA /* LaunchScreen.storyboard */; };
 		49387F461FA1A1BC00A8A8EA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 49387F451FA1A1BC00A8A8EA /* main.m */; };
+		49387F4E1FA1A4E600A8A8EA /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 49387F4D1FA1A4E600A8A8EA /* NotificationManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,8 @@
 		49387F421FA1A1BC00A8A8EA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		49387F441FA1A1BC00A8A8EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49387F451FA1A1BC00A8A8EA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		49387F4C1FA1A4E600A8A8EA /* NotificationManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationManager.h; sourceTree = "<group>"; };
+		49387F4D1FA1A4E600A8A8EA /* NotificationManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,8 +66,8 @@
 		49387F2F1FA1A1BC00A8A8EA /* Balance */ = {
 			isa = PBXGroup;
 			children = (
-				49387F301FA1A1BC00A8A8EA /* AppDelegate.h */,
-				49387F311FA1A1BC00A8A8EA /* AppDelegate.m */,
+				49387F4C1FA1A4E600A8A8EA /* NotificationManager.h */,
+				49387F4D1FA1A4E600A8A8EA /* NotificationManager.m */,
 				49387F361FA1A1BC00A8A8EA /* MasterViewController.h */,
 				49387F371FA1A1BC00A8A8EA /* MasterViewController.m */,
 				49387F391FA1A1BC00A8A8EA /* DetailViewController.h */,
@@ -75,6 +78,8 @@
 				49387F441FA1A1BC00A8A8EA /* Info.plist */,
 				49387F451FA1A1BC00A8A8EA /* main.m */,
 				49387F331FA1A1BC00A8A8EA /* Balance.xcdatamodeld */,
+				49387F301FA1A1BC00A8A8EA /* AppDelegate.h */,
+				49387F311FA1A1BC00A8A8EA /* AppDelegate.m */,
 			);
 			path = Balance;
 			sourceTree = "<group>";
@@ -149,6 +154,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49387F4E1FA1A4E600A8A8EA /* NotificationManager.m in Sources */,
 				49387F461FA1A1BC00A8A8EA /* main.m in Sources */,
 				49387F351FA1A1BC00A8A8EA /* Balance.xcdatamodeld in Sources */,
 				49387F381FA1A1BC00A8A8EA /* MasterViewController.m in Sources */,
@@ -293,7 +299,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = hearthedge.Balance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -307,7 +313,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = hearthedge.Balance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
