@@ -41,12 +41,14 @@
     self.notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
     self.notificationCenter.delegate = self;
     
-    [self.notificationCenter requestAuthorizationWithOptions:(UNAuthorizationOptionAlert)
+    [self.notificationCenter requestAuthorizationWithOptions:(UNAuthorizationOptionAlert | UNAuthorizationOptionSound)
                           completionHandler:^(BOOL granted, NSError * _Nullable error) {
                               // Enable or disable features based on authorization.
                           }];
     
     [self setupNotificationResponses];
+    
+    
     
 }
 
@@ -74,10 +76,7 @@
         }
         
     }
-    
-    
-    
-    
+
     completionHandler();
 }
 
@@ -113,22 +112,38 @@
 }
 
 
-
-+ (void)requestMoodLog {
-    [[NotificationManager sharedNotificationManager] fireNotification];
+- (void)startRegularMoodLogRequests {
+    UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger
+                                                  triggerWithTimeInterval:360
+                                                  repeats:YES];
+    
+    [self scheduleMoodLogNotificaiton:@"RepeatingMoodRequest"
+                          withTrigger:trigger];
 }
 
 
 
-- (void)fireNotification {
++ (void)requestMoodLog {
+    UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger
+                                                  triggerWithTimeInterval:0.5
+                                                  repeats:NO];
+    
+    [[NotificationManager sharedNotificationManager] scheduleMoodLogNotificaiton:@"InstantMoodRequest"
+                                                                     withTrigger:trigger];
+}
+
+
+
+- (void)scheduleMoodLogNotificaiton:(NSString *)identifier
+                        withTrigger:(UNTimeIntervalNotificationTrigger *)trigger
+{
     UNMutableNotificationContent *content = [UNMutableNotificationContent new];
     content.title = @"How is your mood?";
 //    content.body = @"This is body text";
     content.categoryIdentifier = @"REQUEST_LOG";
+    content.sound = [UNNotificationSound defaultSound];
     
-    UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:0.5 repeats:NO];
-    
-    UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:@"MoodRequest" content:content trigger:trigger];
+    UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:identifier content:content trigger:trigger];
     
     [self.notificationCenter addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
         if (error != nil) {
